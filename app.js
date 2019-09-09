@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
 const { Pool, Client } = require('pg')
 
 
@@ -15,7 +16,18 @@ var pool = new Pool({
   password: '123456',
   port: 5432,
 })
+
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
+
 var indexRouter = require('./routes/index')(pool);
+var projectRouter = require('./routes/projects')(pool);
+var profileRouter = require('./routes/profile')(pool);
 var usersRouter = require('./routes/users');
 // const projectsRouter = require('./routes/projects');
 
@@ -34,8 +46,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-// app.use('/projects', projectsRouter);
-// app.use('/headers',headersRouter);
+app.use('/profile', profileRouter);
+app.use('/projects', projectRouter);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

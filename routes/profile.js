@@ -14,11 +14,12 @@ router.use(bodyParser.json())
 module.exports = (pool) => {
 
   /* GET home page. */
-  router.get('../projects', function (req, res, next) {
-    res.render('index', {  });
+  router.get('/profile', function (req, res, next) {
+    res.render('profile', {  });
 
 
   });
   return router;
 
 };
+

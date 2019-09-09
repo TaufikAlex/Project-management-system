@@ -1,47 +1,9 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<% include ../partials/headers %>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <title>Project Management System</title>
-  </head>
-  <body>
-      <nav
-      class="navbar navbar-expand-lg navbar-light"
-      style="background-color: #e3f2fd;"
-    >
-      <span class="navbar-brand mb-0 h1">Project Management System</span>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item" >
-            <a class="nav-link" href="#">Projects</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="#">Profile</a>
-          </li>
-         
-            <li class="nav-item ">
-              <a class="nav-link" href="#">Users</a>
-            </li>
-          <% } %>
-        </ul>
-      </div>
-      <a
-        href="#"
-        class="form-inline btn btn-outline-success my-2 my-sm-0"
-      >
-        Log Out
-      </a>
-    </nav>
     <h1>Projects</h1>
     <h2>Filters</h2>
     <div class="container" style="padding-top: 20px">
-    <form action="/" method="GET">       
+    <form action="/projects" method="GET">       
       <input type="hidden" name="page" value="1" /> 
       <!---------Menampilkan box id------->
     <div class="row">
@@ -49,14 +11,14 @@
             <div class="form-check">
                 <input class="form-check-input" 
                 type="checkbox" 
-                name="cid"
+                name="ckid"
                  />
                 <label class="form-check-label">ID</label>
             </div>
         </div>
         <div class="col-sm-10">
             <div class="form-group">
-                <input type="text" class="form-control" id="id" name="nmid"
+                <input type="text" class="form-control" id="id" name="id"
                 placeholder="ID"/>
             </div>
           </div>
@@ -67,7 +29,7 @@
             <div class="form-check">
                 <input class="form-check-input" 
                 type="checkbox" 
-                name="cname"
+                name="ckname"
                 />Name
             </div>
         </div>
@@ -87,7 +49,7 @@
         <div class="row">
           <div class="col-sm-2">
               <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="cmember"/>Member
+                  <input class="form-check-input" type="checkbox" name="ckmember"/>Member
               </div>
           </div>
           <div class="col-sm-5">    
@@ -128,7 +90,7 @@
                 </div>
               </div>
             </div>
-            <button type="submit" class="btn btn-info" style="border-radius: 20px; margin-bottom: 20px;">Search</button>
+            <button type="submit" class="btn btn-info" style="border-radius: 20px; margin-bottom: 20px;">Apply</button>
           </form>   
        
         <!---------Menampilkan box Tabel------->
@@ -138,18 +100,19 @@
                 <th scope="col">#</th>
                 <th scope="col">Nama</th>
                 <th scope="col">Action</th>
-            </tr>            
-     
+            </tr>  
+            <% data.forEach(data => { %>
               <tr>
-                  <td>data.id</td>
-                  <td>data.dataString</td>
-                  <td><a class="btn btn-success" style="border-radius: 15px;" href="edit/">Edit</a>
-                      <a class="btn btn-danger" style="border-radius: 10px;" href="deleted/">Delete</a>
+                  <td><%=data.projectid %></td>
+                  <td><%=data.name %></td>
+                  <td><a class="btn btn-success" style="border-radius: 15px;" href="/projects/edit/<%= data.projectid %>">Edit</a>
+                      <a class="btn btn-danger" style="border-radius: 10px;" href="/projects/deleted/<% data.projectid %>">Delete</a>
                   </td>
                 </tr>
+            <% }); %>
             
         </table>
-        <a class="btn btn-primary" style="border-radius: 20px;" href="/add">ADD</a>
+        <a class="btn btn-primary" style="border-radius: 20px;" href="/projects/add">ADD</a>
 
       
           
@@ -164,5 +127,5 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
-</html>
+ 
+    <% include ../partials/footers %>
