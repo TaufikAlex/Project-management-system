@@ -103,10 +103,10 @@
             </tr>  
             <% data.forEach(data => { %>
               <tr>
-                  <td><%=data.projectid %></td>
-                  <td><%=data.name %></td>
+                  <td><%= data.projectid %></td>
+                  <td><%= data.name %></td>
                   <td><a class="btn btn-success" style="border-radius: 15px;" href="/projects/edit/<%= data.projectid %>">Edit</a>
-                      <a class="btn btn-danger" style="border-radius: 10px;" href="/projects/deleted/<% data.projectid %>">Delete</a>
+                      <a class="btn btn-danger" style="border-radius: 10px;" href="/projects/deleted/<%= data.projectid %>">Delete</a>
                   </td>
                 </tr>
             <% }); %>

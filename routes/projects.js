@@ -111,10 +111,12 @@ module.exports = (pool) => {
 
 //===========Router GET Deleted==========\\
   router.get('/deleted/:projectid',(req,res)=>{
-    let sql = `DELETE FROM projects WHERE projectid=${req.params.projectid}`;
+    let deleted = parseInt(req.params.projectid)
+    let sql = `DELETE FROM projects WHERE projectid=$1`;
     console.log(sql);
-    pool.query(sql,(err)=>{
+    pool.query(sql,[deleted], (err)=>{
       if (err) throw err;
+
       console.log('suksess deleted');
       res.redirect('/projects');
     })
