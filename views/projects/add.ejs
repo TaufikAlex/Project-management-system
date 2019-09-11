@@ -1,40 +1,51 @@
 <% include ../partials/headers %>
 
-  <body>
-    <form action="/projects/add" method="POST">
-        <div class="container" style="padding: 10px">
-            <h1>Add Project</h1>
-            <br>
-              <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Name</label>
-                <div class="col-sm-8">
-                  <input
-                    type="text"    
-                    name="name"
-                    class="form-control"
-                    placeholder="Project Name"
-                  />
+<body>
+  <form action="/projects/add" method="POST">
+    <div class="container" style="padding: 10px">
+      <h1>Add Project</h1>
+      <br />
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-8">
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            placeholder="Project Name"
+          />
+        </div>
+      </div>
+      <form action="projects/add" method="GET">
+        <div class="container">
+          <div class="row">
+            <p>Members</p>
+            <div class="col-sm-2">
+              <div class="col-sm-2">
+                <div class="form-check">
+                  <%= for (let i = 0; i < data.length; i++) { %>
+                   
+                    <input
+                      class="form-check-input btn-primary "
+                      type="checkbox"
+                      name="namecheck"
+                    /><%=data[i].members%>
+                    
+                 <% }; %>
                 </div>
               </div>
-              <form action="/projects/column" method="GET">
-                <div class="container">
-                  <div class="row">
-                    <p>Members</p>
-                    <div class="col-sm-1">
-                    </div>
-                    <div class="col-sm-1">
-                      <div class="form-check">
-                        <input class="form-check-input btn-primary " type="checkbox" name="idChecked"
-                         /> ID
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input btn-primary" type="checkbox"
-                        name="nameChecked" /> Name
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary" style="border-radius: 20px; margin-bottom: 20px;">Save</button>
-              </form>           
-          </div>       
-<% include ../partials/footers %>
+            </div>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="border-radius: 20px; margin-bottom: 20px;"
+        >
+          Save
+        </button>
+      </form>
+    </div>
+  </form>
+  <% include ../partials/footers %>
+

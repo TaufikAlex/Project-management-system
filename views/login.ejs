@@ -68,9 +68,14 @@
             ><input type="checkbox" /> Remember me</label
           >
           <button type="submit" class="btn btn-info pull-right">
-            <a href="">Sign In </a>
+            Sign In
           </button>
         </div>
+        <%if (loginInfo) {%>
+        <div class="alert alert-danger" role="alert">
+           <%= loginInfo %>
+          </div>
+          <%}%>
       </form>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

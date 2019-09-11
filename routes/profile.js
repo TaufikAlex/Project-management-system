@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var moment = require('moment');
 const bodyParser = require('body-parser');
+const LoginSession = require('../auth/auth');
+
 moment().format();
 
 //------BODY PARSER-----------\\
@@ -14,8 +16,17 @@ router.use(bodyParser.json())
 module.exports = (pool) => {
 
   /* GET home page. */
-  router.get('/profile', function (req, res, next) {
-    res.render('profile', {  });
+  router.get('/',LoginSession.isLoggedIn, function (req, res, next) {
+    
+    console.log("============================Router Index Login====================");
+
+    // res.render('projects/profile', {
+    //     title: 'login',
+    //     user: req.session.user,
+    //     loginInfo: req.flash('loginInfo')[0]
+    //     // loginMessage: req.flash('loginMessage')
+    // }); 
+    res.render('projects/profile', {  });
 
 
   });

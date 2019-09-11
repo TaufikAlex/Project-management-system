@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 const { Pool, Client } = require('pg')
+var flash = require('connect-flash');
 
 
 var app = express();
@@ -17,13 +18,7 @@ var pool = new Pool({
   port: 5432,
 })
 
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}))
+
 
 var indexRouter = require('./routes/index')(pool);
 var projectRouter = require('./routes/projects')(pool);
@@ -43,6 +38,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  secret: 'keyboard cat'
+}))
+app.use(flash());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
