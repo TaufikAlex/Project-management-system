@@ -58,14 +58,18 @@
             <div class="form-group">                    
               <select class="form-control" name="member">
                 <option value="">Choose the member..</option>
-                <%for (let i = 0; i < data.length; i++) { %>
-                  <option value="<%=users[i].userid %>"><%=data[i].members %> </option>  
+                <%for (let i =0; i < data.length; i++) { %>
+                  <option value="<%=data[i].userid %>"><%=data[i].members %> </option>  
                   <% };%>                  
                   </select>
               </div>
             </div>
         </div>
             <button type="submit" class="btn btn-primary" style="border-radius: 20px;">Search</button>
+          
+          <button a href="/projects" type="submit" class="btn btn-success" style="border-radius: 20px;">Reset</button>
+          
+        </div>
             
           </div>
         </form>
@@ -80,37 +84,41 @@
                 <div class="col-sm-2">
                   <p>Columns</p>
                 </div>
+                
                 <div class="col-sm-2">
-                  <div class="form-check">
-                    <input class="form-check-input btn-primary " type="checkbox" name="idChecked" value="true"
-                     <%= option.idChecked ? ' checked': '' %>/> ID
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input btn-primary" type="checkbox" value="true"
-                    name="nameChecked" 
-                    <%= option.nameChecked ? ' checked': '' %>/> Name
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input btn-primary" type="checkbox" value="true"
-                    name="memberChecked" <%= option.memberChecked ? ' checked': '' %>/> Members
-                  </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck1" name="idChecked" value="true" <%= option.idChecked== "true" ? ' checked': '' %>>
+                        <label class="custom-control-label" for="customCheck1" >ID </label>                        
+                      </div>
+                  
+                      <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="customCheck2" name="nameChecked" value="true" <%= option.nameChecked== "true" ? ' checked': '' %>>
+                          <label class="custom-control-label" for="customCheck2" >Name </label>                        
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck3" name="memberChecked" value="true"  <%= option.memberChecked== "true" ? ' checked': '' %>>
+                            <label class="custom-control-label" for="customCheck3">Member </label>                        
+                          </div>
                 </div>
               </div>
             </div>
             
-            <button type="submit" class="btn btn-info" style="border-radius: 20px; margin-bottom: 20px;">Apply</button>
+            <button type="submit" class="btn btn-success" style="border-radius: 20px; margin-bottom: 20px;">Apply</button>
           </form>   
           <!-- <a class="btn btn-danger" style="border-radius: 10px;" href="/projects/update">update</a> -->
        
         <!---------Menampilkan box Tabel------->
-        
+      <div>
         <table class="table table-striped" border="1">
+          <thead>
             <tr>
-                <% if( option.idChecked) { %> <th scope="col">#</th> <%}%>
-                <% if( option.nameChecked) { %><th scope="col">Nama</th><%}%>
-                <% if( option.memberChecked) { %><th scope="col">Member</th><%}%>
+                <% if( option.idChecked == "true") { %> <th scope="col">#</th> <%}%>
+                <% if( option.nameChecked == "true" ) { %><th scope="col">Nama</th><%}%>
+                <% if( option.memberChecked == "true" ) { %><th scope="col">Member</th><%}%>
                 <th scope="col">Action</th>
             </tr>  
+          </thead>
+          <tbody>
             <% data.forEach(data => { %>
               <tr>
                   <% if( option.idChecked) { %> <td><%= data.projectid %></td> <%}%>
@@ -119,22 +127,34 @@
                   <td><a class="btn btn-success" style="border-radius: 15px;" href="/projects/edit/<%= data.projectid %>">Edit</a>
                       <a class="btn btn-danger" style="border-radius: 10px;" href="/projects/deleted/<%= data.projectid %>">Delete</a>
                   </td>
-                </tr>
+              </tr>
             <% }); %>
-            
+          </tbody>
         </table>
-        <a class="btn btn-primary" style="border-radius: 20px;" href="/projects/add">ADD</a>
+        </div>
+        <nav aria-label="Page navigation example" style="margin-top:1%">
+            <ul class="pagination" class="pagination justify-content-center">
+                <li class="page-item <%= current == 1 ? 'disabled' : ''%>"><a class="page-link"
+                        href="/projects<%= url.replace(`page=${parseInt(current)}`, `page=${parseInt(current) - 1}`) %>">Previous</a>
+                </li>
+                <% for(let i = 1; i <= pages; i++){ %>
+                <li class="page-item <%= current == i ? 'active' : '' %>"><a class="page-link"
+                        href="/projects<%= url.replace(`page=${current}`, `page=${i}`) %>"><%= i %></a></li>
+                <% } %>
+                <li class="page-item <%= current == pages ? 'disabled' : ''%>"><a class="page-link"
+                        href="/projects<%= url.replace(`page=${parseInt(current)}`, `page=${parseInt(current) + 1}`) %>">Next</a>
+                </li>
+            </ul>
+        </nav>
 
-      
-          
+        <a class="btn btn-primary" style="border-radius: 20px;" href="/projects/add">ADD</a>
     </div>
-    
 </div>
 
 </form>
 
     <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- jquery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

@@ -17,7 +17,7 @@
         width: 350px;
         margin: 120px auto;
         padding: 25px 20px;
-        background: #3a1975;
+        background: #06c8eb;
         box-shadow: 2px 2px 4px #ab8de0;
         border-radius: 5px;
         color: #fff;
@@ -67,15 +67,16 @@
           <label class="checkbox-inline pull-left"
             ><input type="checkbox" /> Remember me</label
           >
-          <button type="submit" class="btn btn-info pull-right">
+          <button type="submit" class="btn btn-primary pull-right">
             Sign In
           </button>
         </div>
+
         <%if (loginInfo) {%>
         <div class="alert alert-danger" role="alert">
-           <%= loginInfo %>
-          </div>
-          <%}%>
+          <%= loginInfo %>
+        </div>
+        <%}%>
       </form>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
