@@ -22,7 +22,7 @@ var pool = new Pool({
 
 var indexRouter = require('./routes/index')(pool);
 var projectRouter = require('./routes/projects')(pool);
-var profileRouter = require('./routes/profile')(pool);
+var profileRouter = require('./routes/profiles')(pool);
 var usersRouter = require('./routes/users');
 // const projectsRouter = require('./routes/projects');
 
@@ -46,7 +46,7 @@ app.use(flash());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/profile', profileRouter);
+app.use('/profiles', profileRouter);
 app.use('/projects', projectRouter);
 
 

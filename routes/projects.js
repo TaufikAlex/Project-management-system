@@ -133,7 +133,7 @@ module.exports = (pool) => {
     console.log("==");
     console.log("==");
 
-    let sql = `UPDATE users SET projectsoptions='${JSON.stringify(req.body)}' WHERE userid =${req.session.user.userid} `
+    let sql = `UPDATE users SET projectsoptions=<%=data[i].members %>'${JSON.stringify(req.body)}' WHERE userid =${req.session.user.userid} `
     console.log(sql);
     console.log(req.session.user);
 
@@ -191,7 +191,7 @@ module.exports = (pool) => {
         console.log(sqlsave);
 
         pool.query(sqlsave, () => {
-          res.redirect('/projects', { isAdmin: req.session.user })
+          res.redirect('/projects')
         })
       })
     })
