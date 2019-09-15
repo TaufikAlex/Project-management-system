@@ -13,8 +13,8 @@ router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 //----------END BP----------\\
 
+var path = "projects";
 module.exports = (pool) => {
-
 
 
   // ---------------------------- function filter ----------------------------
@@ -24,17 +24,19 @@ module.exports = (pool) => {
     console.log("==");
     console.log("==");
     console.log("==");
+
+
     const { ckid, id, ckname, name, ckmember, member } = req.query;
     const url = (req.url == '/') ? `/?page=1` : req.url
     const page = req.query.page || 1;
     const limit = 3;
     const offset = (page - 1) * limit
     let params = [];
-    
+
     console.log(req.query);
     console.log("");
-      console.log("");
-    
+    console.log("");
+
     if (ckid && id) {
       params.push(`projects.projectid = ${id}`);
     }
@@ -47,10 +49,10 @@ module.exports = (pool) => {
     // console.log(member);
 
     let sql = `SELECT COUNT(id) as total FROM (SELECT DISTINCT projects.projectid AS id FROM projects LEFT JOIN members ON projects.projectid = members.projectid`;
-    console.log('this sql >',sql);
+    console.log('this sql >', sql);
     console.log("");
-      console.log("");
-    
+    console.log("");
+
     if (params.length > 0) {
       sql += ` WHERE ${params.join(" AND ")}`
     }
@@ -67,55 +69,58 @@ module.exports = (pool) => {
       console.log(sql);
       console.log("");
       console.log("");
-      
+
       if (params.length > 0) {
         sql += ` WHERE ${params.join(" AND ")}`
       }
       sql += ` ORDER BY projects.projectid LIMIT ${limit} OFFSET ${offset}`
       let subquery = `SELECT DISTINCT projects.projectid FROM projects LEFT JOIN members ON projects.projectid = members.projectid`
+      if (params.length > 0) {
+        subquery += ` WHERE ${params.join(" AND ")}`
+      }
       subquery += ` ORDER BY projects.projectid LIMIT ${limit} OFFSET ${offset}`
       let sqlMembers = `SELECT projects.projectid, users.userid, CONCAT (users.firstname,' ',users.lastname) AS fullname FROM projects LEFT JOIN members ON projects.projectid = members.projectid LEFT JOIN users ON users.userid = members.userid WHERE projects.projectid IN (${subquery})`
 
-      console.log('this subquery>',subquery);
+      console.log('this subquery>', subquery);
       console.log("");
       console.log("");
-      console.log('this sql members>',sqlMembers);
+      console.log('this sql members>', sqlMembers);
 
       console.log("");
       console.log("");
-      
-      
-      
-      
-      // console.log(sql,sqlMembers);
+
+      console.log(sql);
 
       pool.query(sql, (err, projectData) => {
         console.log(projectData);
-        
-        if (err) throw err;
 
+        if (err) throw err;
+        // console.log();
+        
         pool.query(sqlMembers, (err, memberData) => {
 
           projectData.rows.map(project => {
             project.members = memberData.rows.filter(member => { return member.projectid == project.projectid }).map(data => data.fullname)
           })
           let sqlusers = `SELECT * FROM users`;
-          let sqloption = `SELECT projectsoptions  FROM users  WHERE userid = ${req.session.user.userid}`;
+          let sqloption = `SELECT projectsoptions  FROM users  WHERE userid =${req.session.user.userid}`;
           console.log(sqloption);
 
           pool.query(sqlusers, (err, data) => {
+            console.log('this data users >',data.rows);
+            
             pool.query(sqloption, (err, options) => {
               console.log(err, options.rows);
 
               // console.log(typeof option.rows[0].projectoption);
               res.render('projects/index', {
                 data: projectData.rows,
-                datauser: data.rows,
                 query: req.query,
                 users: data.rows,
                 current: page,
                 pages: pages,
                 url: url,
+                path,
                 option: JSON.parse(options.rows[0].projectsoptions),
                 isAdmin: req.session.user
               })
@@ -133,7 +138,7 @@ module.exports = (pool) => {
     console.log("==");
     console.log("==");
 
-    let sql = `UPDATE users SET projectsoptions=<%=data[i].members %>'${JSON.stringify(req.body)}' WHERE userid =${req.session.user.userid} `
+    let sql = `UPDATE users SET projectsoptions = '${JSON.stringify(req.body)}' WHERE userid =${req.session.user.userid} `
     console.log(sql);
     console.log(req.session.user);
 
@@ -157,7 +162,7 @@ module.exports = (pool) => {
       if (err) throw err;
 
       console.log('Susccess add Projects');
-      res.render('projects/add', { data: row.rows, isAdmin: req.session.user, })
+      res.render('projects/add', { data: row.rows, isAdmin: req.session.user, path })
     })
   })
   // ============================= Router ADD Post Project =============================
@@ -166,8 +171,7 @@ module.exports = (pool) => {
     console.log("==");
     console.log("==");
     console.log("==");
-    console.log("==")
-
+    console.log("==");
     let sql = `INSERT INTO projects (name) values ('${req.body.name}');`
     console.log(sql);
 
@@ -217,6 +221,7 @@ module.exports = (pool) => {
           projectid: data.rows[0].projectid,
           members: data.rows.map(item => item.userid),
           users: user.rows,
+          path,
           isAdmin: req.session.user
         })
 
@@ -281,15 +286,32 @@ module.exports = (pool) => {
 
   })
 
-  //==========Router Get Profile=========\\
-  router.get('/profile', (req, res) => {
-
+  //==========Router Get Overview=========\\
+  router.get('/overview/:projectid', (req, res) => {
+    let path = "overview"
     console.log('=====================Router Profile=============================');
     console.log("==");
     console.log("==");
     console.log("==");
 
-    res.redirect('/profile');
+    res.render('projects/overview', {
+      path,
+      projectid: req.params.projectid
+    });
+  })
+
+  //==========Router Get Overview=========\\
+  router.get('/activity/:projectid', (req, res) => {
+    let path = "activity"
+    console.log('=====================Router Profile=============================');
+    console.log("==");
+    console.log("==");
+    console.log("==");
+
+    res.render('projects/activity', {
+      path,
+      projectid: req.params.projectid
+    });
   })
 
   return router;

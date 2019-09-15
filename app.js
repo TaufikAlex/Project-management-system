@@ -23,11 +23,11 @@ var pool = new Pool({
 var indexRouter = require('./routes/index')(pool);
 var projectRouter = require('./routes/projects')(pool);
 var profileRouter = require('./routes/profiles')(pool);
-var usersRouter = require('./routes/users');
-// const projectsRouter = require('./routes/projects');
+var usersRouter = require('./routes/users')(pool);
+var membersRouter = require('./routes/members')(pool);
 
+// var usersRouter = require('./routes/users');
 
-// var indexRouter = require('./routes/index')(pool);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -48,6 +48,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/profiles', profileRouter);
 app.use('/projects', projectRouter);
+app.use('/members', membersRouter);
+
 
 
 

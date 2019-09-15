@@ -20,7 +20,7 @@ module.exports = (pool) => {
     console.log("============================Router GET profile====================");
     let sql = `SELECT * FROM users where userid = ${req.session.user.userid}`;
     console.log('this sql get>', sql);
-
+    var path = "profiles";
 
     pool.query(sql, (err, row, user) => {
       if (err) { console.log("error", err) }
@@ -29,6 +29,7 @@ module.exports = (pool) => {
       res.render('profiles/profile', {
         data: req.session.user,
         Data,
+        path,
         isAdmin: req.session.user
       })
     })
@@ -44,27 +45,19 @@ module.exports = (pool) => {
 
     let sql2 = `UPDATE users SET password ='${password}', roles='${position}', typejob='${job}' WHERE userid ='${req.session.user.userid}' `
     console.log(sql2);
-    // if (password.trim() == '') {
-    //   sql = `UPDATE users set roles='${position}', typejob='${job}' WHERE userid ='${req.session.user.userid}'`;
-    // }
+        
+    if (password.trim() == '') {
+      sql2 = `UPDATE users set roles='${position}', typejob='${job}' WHERE userid ='${req.session.user.userid}'`;
+    }
+    console.log(sql2);
+    
     pool.query(sql2, (err, processData) => {
       console.log(processData.rows);
 
       res.redirect('/profiles')
 
     })
-    // let sql = `UPDATE users set password ='${password}', roles ='${position}', typejob ='${job}' WHERE userid = ${req.session.user.userid} '`;
-    // if(password.trim() == ''){
-    //   sql = `UPDATE users set roles = '${position}', typejob = '${job}' WHERE userid = ${req.session.user.userid}'`;
-    // }
-    // pool.query(sql, (err) =>{
-    //   if(err) console.log("error",err);
-
-    //   console.log(sql);
-
-    //   res.redirect('/profiles')
-    // })
-
+    
 
   })
   return router;
