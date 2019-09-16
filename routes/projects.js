@@ -467,7 +467,7 @@ module.exports = (pool) => {
     })
   })
 
-  router.get('/editMember/:projectid/:membersid',(req, res) => {
+  router.post('/editMember/:projectid/:membersid',(req, res) => {
     console.log("====================Router POST Members Update================");
     console.log("==");
     console.log("==");
@@ -476,12 +476,13 @@ module.exports = (pool) => {
     id = req.params.membersid;
     const {position} = req.body
 
-    let sql =`UPDATE members SET roles ='${position}', WHERE =${id}`
+    let sql =`UPDATE members SET roles ='${position}' WHERE membersid =${id}`
+    console.log(sql);
+    
     pool.query(sql, (err, data) =>{
       if (err) { console.log('Not Found') }
-      res.redirect('/projects/members/${projectid}')
+      res.redirect(`/projects/members/${projectid}`)
     })
-
   })
 
   return router;
