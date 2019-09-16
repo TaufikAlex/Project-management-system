@@ -314,6 +314,176 @@ module.exports = (pool) => {
     });
   })
 
+
+  //==================================Router Get MEMBER======================================================\\
+  router.get('/members/:projectid',LoginSession.isLoggedIn, (req, res) => {
+    let path = "members"
+    console.log("=================Router Get Overview Members============");
+    console.log("==");
+    console.log("==");
+    console.log("==");
+
+
+    const { ckid, memberid, ckname, name, ckposition, position } = req.query;
+    let temp = []
+    const pathside = "member";
+    console.log(req.url)
+    const url = (req.url == `/members/${req.params.projectid}`) ? `/members/${req.params.projectid}/?page=1` : req.url
+    let page = req.query.page || 1;
+    let limit = 3;
+    let offset = (page - 1) * limit
+
+    if (ckid && memberid) {
+      temp.push(`members.membersid = ${memberid}`)
+    }
+
+    if (ckname && name) {
+      temp.push(`fullname = ${name}`)
+    }
+
+    if (ckposition && position) {
+      temp.push(`members.roles = "${position}"`)
+    }
+    let sql = `SELECT count(*) as total FROM members WHERE members.projectid = ${req.params.projectid}`;
+    // if (temp.length > 0) {
+    //   sql += ` WHERE ${temp.join(" AND ")}`
+    // }
+    pool.query(sql, (err, count) => {
+      const total = count.rows[0].total
+      const pages = Math.ceil(total / limit)
+      let sqlmember = `SELECT projects.projectid, members.membersid, members.roles, CONCAT (users.firstname,' ',users.lastname) AS fullname FROM members LEFT JOIN projects ON projects.projectid = members.projectid LEFT JOIN users ON users.userid = members.userid WHERE members.projectid = ${req.params.projectid}`;
+      if (temp.length > 0) {
+        sqlmember += ` AND ${temp.join(" AND ")}`
+      }
+      sqlmember += ` ORDER BY members.projectid LIMIT ${limit} OFFSET ${offset}`
+      
+
+      console.log('this sql member>',sqlmember);
+
+      let sqloption = `SELECT memberoption  FROM users  WHERE userid = ${req.session.user.userid}`;
+
+      pool.query(sqlmember, (err, data) => {
+        pool.query(sqloption, (err, option) => {
+          res.render('members/list', {
+            data: data.rows,
+            projectid: req.params.projectid,
+            current: page,
+            pages: pages,
+            url: url,
+            fullname: data.fullname,
+            option: option.rows[0].memberoption,
+            pathside, path,
+            isAdmin: req.session.user,
+            query: req.query
+          })
+        })
+      });
+    })
+  });
+
+  router.post('/optionmember/:projectid', (req, res) => {
+    projectid = req.params.projectid;
+
+    console.log("====================Router Post Members options================");
+    console.log("==");
+    console.log("==");
+    console.log("==");
+
+    let sql = `UPDATE users SET memberoption = '${JSON.stringify(req.body)}' WHERE userid =${req.session.user.userid} `
+    console.log('this sql members update>',sql);
+    console.log(req.session.user);
+
+    pool.query(sql, (err) => {
+      if (err) throw err;
+
+      res.redirect(`/projects/members/${projectid}`);
+    })
+  })
+
+  router.get('/addMember/:projectid',LoginSession.isLoggedIn,(req, res) =>{
+
+    console.log("====================Router GET Members ADD================");
+    console.log("==");
+    console.log("==");
+    console.log("==");
+
+    const pathside = "member";
+    let sql = `SELECT users.userid, users.firstname, users.lastname,users.roles, members.projectid
+    FROM users LEFT JOIN members ON members.userid = users.userid WHERE projectid IS NULL`;
+    console.log(sql);
+    pool.query(sql,(err,row) => {
+      res.render('members/add',{
+        data: row.rows,
+        projectid: req.params.projectid,
+        isAdmin: req.session.user,
+        path,
+        pathside
+      })
+    })
+  })
+
+  router.post('/addMember/:projectid', (req, res) => {
+    console.log("====================Router POST Members ADD================");
+    console.log("==");
+    console.log("==");
+    console.log("==");
+
+    projectid = req.params.projectid;
+    const { position} = req.body
+    console.log(req.body);
+    
+
+    let sql = `INSERT INTO members(userid, roles, projectid) VALUES(${req.body.name}, '${position}', ${projectid})`;
+    console.log(sql);
+    
+    pool.query(sql, (err, data) => {
+      res.redirect(`/projects/members/${projectid}`)
+    })
+  })
+
+  
+  router.get('/editMember/:projectid/:membersid',(req, res) => {
+    console.log("====================Router GET Members Update================");
+    console.log("==");
+    console.log("==");
+    console.log("==");
+    const pathside = "member";
+
+    projectid = req.params.projectid;
+    id = req.params.membersid;
+
+
+    let sql = `SELECT users.firstname, users.lastname, members.roles, membersid FROM members LEFT JOIN users ON users.userid = members.userid left join projects on projects.projectid =  members.projectid WHERE projects.projectid = ${projectid} AND membersid = ${id}`
+    console.log(sql);
+    pool.query(sql,(err,data) => {
+      res.render('members/edit',{
+        projectid,
+        id: req.params.membersid,
+        data: data.rows[0],
+        path,
+        pathside,
+        isAdmin: req.session.user
+      })
+    })
+  })
+
+  router.get('/editMember/:projectid/:membersid',(req, res) => {
+    console.log("====================Router POST Members Update================");
+    console.log("==");
+    console.log("==");
+    console.log("==");
+    projectid = req.params.projectid;
+    id = req.params.membersid;
+    const {position} = req.body
+
+    let sql =`UPDATE members SET roles ='${position}', WHERE =${id}`
+    pool.query(sql, (err, data) =>{
+      if (err) { console.log('Not Found') }
+      res.redirect('/projects/members/${projectid}')
+    })
+
+  })
+
   return router;
 
 };

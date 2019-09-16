@@ -2,7 +2,7 @@
 
 <h2>Filters</h2>
 <div class="container" style="padding-top: 20px">
-  <form action="/projects/edit/<%=projectid%>" method="POST">
+  <form action="/projects/edit/<%= projectid %>" method="POST">
     <input type="hidden" name="page" value="1" />
     <!---------Menampilkan box id------->
     <div class="form-group row">
@@ -41,3 +41,4 @@
   </form>
 </div>
 <% include ../partials/footers %>
+>
