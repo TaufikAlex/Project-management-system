@@ -5,11 +5,12 @@
 <div class="d-flex" id="wrapper" style="margin-top: 0.9%">
 <% include ../partials/sidebar %>
 
-    <div class="container" style="padding-top: 1px; margin-right: 10%">
-    <form action="/projects/members/<%=projectid %>" method="GET">       
-    <input type="hidden" name="page" value="1" /> 
+
+<div class="container" style="margin-right: 30%" >
     <h1>Members</h1>
     <h2>Filters</h2>
+    <form action="/projects/members/<%=projectid %>" method="GET">       
+    <input type="hidden" name="page" value="1" /> 
       <!---------Menampilkan box id------->
     <div class="row" style="margin-top: 30px;">
         <div class="col-sm-2">
@@ -49,7 +50,7 @@
               </div>
           </div>
           <div class="col-sm-8">
-                <div class="form-group col-md-6" style="margin-left: -2%">
+                <div class="form-group col-md-8" style="margin-left: -2%">
                         <select class="custom-select my-1 mr-sm-2" id="member" name="position">
                             <option>Choose the Position</option>
                             <option value="Manager">Manager</option>
@@ -119,12 +120,24 @@
                   <% if( option.nameChecked) { %><td><%= data.fullname %></td> <%}%>
                   <% if( option.positionChecked) { %><td><%= data.roles %></td> <%}%>
                   <td><a class="btn btn-success" style="border-radius: 15px;" href="/projects/editMember/<%= projectid %>/<%= data.membersid %>">Edit</a>
-                      <a class="btn btn-danger" style="border-radius: 10px;" href="/projects/deleted/<%= data.projectid %>">Delete</a>
+                      <a class="btn btn-danger" style="border-radius: 10px;" href="/projects/deleteMember/<%= projectid %>/<%= data.membersid %>">Delete</a>
                   </td>
               </tr>
             <% }); %>
           </tbody>
         </table>
+        <nav aria-label="Page navigation example">
+             <ul class="pagination">
+                <li class="page-item <%= current == 1 ? 'disabled': '' %>"><a
+                    class="page-link " href="/projects<%= url.replace(`page=${parseInt(current)}`, `page=${parseInt(current) - 1}`)%>">Previous</a></li>
+                 <% for(let i = 1; i <= pages; i++){ %>
+                 <li class="page-item"><a class="page-link <%= current == i ? 'active': '' %>"
+                    href="/projects<%= url.replace(`page=${parseInt(current)}`, `page=${i}`) %>"><%= i %></a>
+                </li>
+                <% } %>
+                <li class="page-item <%= current == pages ? 'disabled': '' %>"><a class="page-link" href="/projects<%= url.replace(`page=${parseInt(current)}`, `page=${parseInt(current) + 1}`)%>">Next</a></li>
+             </ul>
+        </nav>
         <a class="btn btn-primary" style="border-radius: 20px;" href="/projects/addMember/<%= projectid %>">ADD</a>
     </div> 
             

@@ -7,6 +7,7 @@ var session = require('express-session');
 const { Pool, Client } = require('pg')
 var flash = require('connect-flash');
 
+const fileUpload = require('express-fileupload');
 
 var app = express();
 
@@ -39,10 +40,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use(session({
   secret: 'keyboard cat'
 }))
 app.use(flash());
+
+app.use(fileUpload());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

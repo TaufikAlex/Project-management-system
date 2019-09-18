@@ -2,13 +2,8 @@
 <% include ../partials/headers %>
 
 
-<div class="d-flex" id="wrapper" style="margin-top: 3.9%">
+<div class="d-flex" id="wrapper" style="margin-top: 0.9%">
     <% include ../partials/sidebar %>
-        <!-- Sidebar -->
-
-
-        <!-- Page Content -->
-        <!-- <div id="page-content-wrapper" style="background-color: cornsilk"> -->
         <div class="container-fluid">
             <div class="container-fluid">
                 <h2 style="margin-top: 1%">Overview</h2>
@@ -22,9 +17,9 @@
                             <div class="row">
                                 <div class="col-12 col-md-8"> Issues Tracker
                                     <ul>
-                                        <li>Bug :  </li>
-                                        <li>Feature :  </li>
-                                        <li>Support :  </li>
+                                        <%count.forEach(item => { %>
+                                            <li><%=item.tracker%>  : <%=item.total%> Open / <%=item.status %> </li>
+                                        <% });%>
                                     </ul>
                                 </div>
                             </div>
@@ -48,7 +43,8 @@
                 </div>
             </div>
         </div>
-        <!-- </div> -->
+    </div>
+
 </body>
 
 </html>

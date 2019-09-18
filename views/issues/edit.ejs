@@ -1,0 +1,408 @@
+<% include ../partials/headers %>
+
+<div class="row" style="padding: 20px">
+  <% include ../partials/sidebar %>    
+      <div class="col">
+      </div>
+      <div class="col-10">
+        
+        <br />
+        <form
+          action="/projects/editIssues/<%=projectid%>/<%=data.issueid%>"
+          method="POST"
+          encType="multipart/form-data"
+        >
+          <fieldset class="form-group">
+            <div class="row">
+              <legend class="col-form-label col-sm-2 pt-0">Tracker</legend>
+              <div class="col-sm-5">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="tracker"
+                    id="tracker"
+                    value="Bug"
+                    <%= issues[0].tracker == 'Bug' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="tracker">
+                    Bug
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="tracker"
+                    id="tracker"
+                    value="Feature"
+                    <%= issues[0].tracker == 'Feature' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="tracker">
+                    Feature
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="tracker"
+                    id="tracker"
+                    value="Support"
+                    <%= issues[0].tracker == 'Support' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="tracker">
+                    Support
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <div class="form-group row">
+            <label for="subject" class="col-sm-2 col-form-label">Subject</label>
+            <div class="col-sm-5">
+              <input
+                type="text"
+                class="form-control"
+                id="subject"
+                name="subject"
+                placeholder="Subject"
+                value="<%= issues[0].subject %>"
+                />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="description" class="col-sm-2 col-form-label"
+              >Description</label
+            >
+            <div class="col-sm-5">
+              <textarea
+                rows="3"
+                type="description"
+                class="form-control"
+                id="description"
+                name="description"
+                placeholder="Description"
+                ><%= issues[0].description ? issues[0].description : '' %></textarea>
+            </div>
+          </div>
+          <fieldset class="form-group">
+            <div class="row">
+              <legend class="col-form-label col-sm-2 pt-0">Status</legend>
+              <div class="col-sm-5">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="status"
+                    id="status"
+                    value="New"
+                    <%= issues[0].status == 'New' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="status">
+                    New
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="status"
+                    id="status"
+                    value="In Progress"
+                    <%= issues[0].status == 'In Progress' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="status">
+                    In Progress
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="status"
+                    id="status"
+                    value="Resolved"
+                    <%= issues[0].status == 'Resolved' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="status">
+                    Resolved
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="status"
+                    id="status"
+                    value="Feedback"
+                    <%= issues[0].status == 'Feedback' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="status">
+                    Feedback
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="status"
+                    id="status"
+                    value="Closed"
+                    <%= issues[0].status == 'Closed' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="status">
+                    Closed
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="status"
+                    id="status"
+                    value="Rejected"
+                    <%= issues[0].status == 'Rejected' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="status">
+                    Rejected
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="row">
+              <legend class="col-form-label col-sm-2 pt-0">Priority</legend>
+              <div class="col-sm-5">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="priority"
+                    id="priority"
+                    value="Normal"
+                    <%= issues[0].priority == 'Normal' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="priority">
+                    Normal
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="priority"
+                    id="priority"
+                    value="High"
+                    <%= issues[0].priority == 'High' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="priority">
+                    High
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="priority"
+                    id="priority"
+                    value="Urgent"
+                    <%= issues[0].priority == 'Urgent' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="priority">
+                    Urgent
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="priority"
+                    id="priority"
+                    value="Immediate"
+                    <%= issues[0].priority == 'Immediate' ? 'checked' : '' %>
+                  />
+                  <label class="form-check-label" for="priority">
+                    Immediate
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="row">
+              <legend class="col-form-label col-sm-2 pt-0">Assignee</legend>
+              <div class="col-sm-5">
+                <select class="custom-select" name="assignee" id="assigne">
+                  <option selected>Assignee</option>
+                  <% datauser.forEach(member => { %>
+                  <option 
+                    value="<%= member.userid %>"
+                    <%= member.userid == issues[0].assignee ? 'selected' : '' %>
+                    ><%= member.firstname + ' ' + member.lastname %></option
+                  >
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Start Date</label>
+            <div class="col-sm-5">
+              <input
+                type="date"
+                id="startdate"
+                name="startdate"
+                class="form-control"
+                value="<%= moment(issues[0].startdate).format('YYYY-MM-DD') %>"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Due Date</label>
+            <div class="col-sm-5">
+              <input
+                type="date"
+                id="duedate"
+                name="duedate"
+                class="form-control"
+                value="<%= moment(issues[0].duedate).format('YYYY-MM-DD') %>"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Estimated Time</label>
+            <div class="col-sm-5">
+              <input
+                type="number"
+                id="estimatedtime"
+                name="estimatetime"
+                class="form-control"
+                placeholder="0"
+                value="<%= issues[0].estimatedate %>"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="done" class="col-sm-2 col-form-label">Done</label>
+            <div class="col-sm-5">
+              <select class="custom-select form-control" name="progres" id="done">
+                <option>Percentage</option>
+                <option value="0" <%= issues[0].done == 0 ? 'selected' : '' %>>0%</option>
+                <option value="25" <%= issues[0].done == 25 ? 'selected' : '' %>>25%</option>
+                <option value="50" <%= issues[0].done == 50 ? 'selected' : '' %>>50%</option>
+                <option value="75" <%= issues[0].done == 75 ? 'selected' : '' %>>75%</option>
+                <option value="100" <%= issues[0].done == 100 ? 'selected' : '' %>>100%</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">File</label>
+            <div class="col-sm-5">
+              <input type="file" id="file" name="doc" class="form-control" value="<%= issues[0].files %>" />
+            </div>
+          </div>
+          <div class='col-sm-4 col-xs-6 col-md-3 col-lg-3 mt-1'>
+                <a class="thumbnail fancybox" rel="ligthbox"
+                    href="/public/images/<%= `${issues[0].files}?${Date.now()}` %>">
+                    <img class="img-responsive"
+                        src="/public/images/ <%= `${issues[0].files}?${Date.now()}` %>" alt="" width="100"
+                        style="margin-left: 75%" />
+                </a>
+            </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Spent Time</label>
+            <div class="col-sm-5">
+              <input
+                type="number"
+                id="spenttime"
+                name="spenttime"
+                class="form-control"
+                value="<%= issues[0].spenttime %>"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="targetversion" class="col-sm-2 col-form-label"
+              >Target Version</label
+            >
+            <div class="col-sm-5">
+              <input
+                type="text"
+                class="form-control"
+                id="targetversion"
+                name="targetversion"
+                value="<%= issues[0].targetversion %>"
+              />
+            </div>
+          </div>
+          <fieldset class="form-group">
+            <div class="row">
+              <legend class="col-form-label col-sm-2 pt-0">Author</legend>
+              <div class="col-sm-5">
+                <input 
+                  type="text" 
+                  name="author" 
+                  class="form-control-plaintext"
+                  id="author" 
+                  value="<%= issues[0].author %>" 
+                  readonly
+                >
+              </div>
+            </div>
+          </fieldset>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Created Date</label>
+            <div class="col-sm-5">
+              <input
+                type="date"
+                id="createddate"
+                name="createddate"
+                class="form-control"
+                value="<%= moment(issues[0].createddate).format('YYYY-MM-DD') %>"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Updated Date</label>
+            <div class="col-sm-5">
+              <input
+                type="date"
+                id="updateddate"
+                name="updateddate"
+                class="form-control"
+                value="<%= moment(issues[0].updateddate).format('YYYY-MM-DD') %>"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Closed Date</label>
+            <div class="col-sm-5">
+              <input
+                type="date"
+                id="closeddate"
+                name="closeddate"
+                class="form-control"
+                value="<%= moment(issues[0].closeddate).format('YYYY-MM-DD') %>"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Parent Task</label>
+            <div class="col-sm-5">
+              <input
+                type="number"
+                id="parenttask"
+                name="parenttask"
+                class="form-control"
+                value="<%= issues[0].parenttask %>"
+              />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
