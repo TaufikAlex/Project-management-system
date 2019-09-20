@@ -10,9 +10,10 @@
             <label class="form-check-label">EMAIL</label>
         </div>
     </div>
+    <% if(isAdmin.isadmin){ %>
     <div class="col-sm-6">
         <div class="form-group">
-            <input type="email" class="form-control" id="EMAIL" name="EMAIL"placeholder="EMAIL" value="<%=Data.email%>" readonly/>
+            <input type="email" class="form-control" id="EMAIL" name="EMAIL"placeholder="EMAIL" value="<%=Data.email%>" disabled/>
         </div>
       </div>
 </div>
@@ -25,10 +26,31 @@
     </div>
     <div class="col-sm-6">
         <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Password" value="" readonly/>
+            <input type="password" class="form-control" name="password" placeholder="Sorry Password Cant Be changed For u Now" value="" disabled/>
         </div>
       </div>
 </div>
+<%} else { %>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <input type="email" class="form-control" id="EMAIL" name="EMAIL"placeholder="EMAIL" value="<%=Data.email%>" disabled/>
+        </div>
+      </div>
+</div>
+<!---------Menampilkan box Nama------->
+<div class="row">
+    <div class="col-sm-2">
+        <div class="form-check">            
+            <label class="form-check-label">Password</label>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Password" value="" />
+        </div>
+      </div>
+</div>
+<%}%>
 <div class="col-sm-11">
 <fieldset class="form-group">
     <div class="row">

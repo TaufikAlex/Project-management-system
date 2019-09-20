@@ -9,13 +9,13 @@
     <div class="row">
         <div class="col-sm-2">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox"name="ckid" />
+                <input class="form-check-input" type="checkbox"name="ckid" <%= query.ckid ? ' checked': '' %> />
                 <label class="form-check-label">ID</label>
             </div>
         </div>
         <div class="col-sm-10">
             <div class="form-group">
-                <input type="text" class="form-control" id="id" name="id"placeholder="ID"/>
+                <input type="text" class="form-control" id="id" name="id"placeholder="ID" value="<%= query.id %>"/>
             </div>
           </div>
     </div>
@@ -23,15 +23,13 @@
     <div class="row">
         <div class="col-sm-2">
             <div class="form-check">
-                <input class="form-check-input" 
-                type="checkbox" 
-                name="ckname"
-                />Name
+                <input class="form-check-input" type="checkbox" name="ckname"
+                <%= query.ckname ? ' checked': '' %>/>Name
             </div>
         </div>
         <div class="col-sm-10">
             <div class="form-group">
-                <input type="text" class="form-control" id="name" name="name"placeholder="Name"/>
+                <input type="text" class="form-control" id="name" name="name"placeholder="Name" value="<%= query.name %>"/>
             </div>
           </div>
     </div>
@@ -40,7 +38,7 @@
         <div class="row">
           <div class="col-sm-2">
               <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="ckmember"/>Member
+                  <input class="form-check-input" type="checkbox" name="ckmember" <%= query.ckmember ? ' checked': '' %>/>Member
               </div>
           </div>
           <div class="col-sm-5">
@@ -49,16 +47,16 @@
               <select class="form-control" name="member">
                 <option value="">Choose the member..</option>
                 <%for (let i =0; i < users.length; i++) { %>
-                  <option value="<%=users[i].userid %>"><%= users[i].firstname%> <%= users[i].lastname%></option>  
+                  <option value="<%=users[i].userid %> "><%= users[i].firstname%> <%= users[i].lastname%></option>  
                   <% };%>                  
                   </select>
               </div>
             </div>
         </div>
             <button type="submit" class="btn btn-primary" style="border-radius: 20px;">Search</button>
-          
-          <button a href="/projects" type="submit" class="btn btn-success" style="border-radius: 20px;">Reset</button>
-          
+            <a href="/projects">
+          <button  type="button" class="btn btn-info" style="border-radius: 20px;">Reset</button>
+          </a>
         </div>
             
           </div>
@@ -93,7 +91,7 @@
               </div>
             </div>
             
-            <button type="submit" class="btn btn-success" style="border-radius: 20px; margin-bottom: 20px;">Apply</button>
+            <button type="submit" class="btn btn-info" style="border-radius: 20px; margin-bottom: 20px;">Apply</button>
           </form>   
           
        
@@ -137,7 +135,7 @@
             </ul>
         </nav>
 
-        <a class="btn btn-primary" style="border-radius: 20px;" href="/projects/add">ADD</a>
+        <a class="btn btn-secondary" style="border-radius: 20px;" href="/projects/add">ADD</a>
     </div>
 </div>
 

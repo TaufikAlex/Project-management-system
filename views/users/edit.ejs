@@ -10,15 +10,29 @@
             <div class="card">
                 <div class="card-body">
                     <form action="/users/update/<%=data.userid%>" method="POST">
-                        <div class="form-group">
-                            <label for="inputAddress2">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="<%=data.email%>" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress2">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Sorry Password Cant Be changed For u Now"
-                                name="password" readonly>
-                        </div>
+                        <%if(isAdmin.isadmin){ %>
+                            <div class="form-group">
+                                <label for="inputAddress2">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="<%=data.email%>" disabled>
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="inputAddress2">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Sorry Password Cant Be changed For u Now"
+                                    name="password" disabled>
+                            </div>
+                        <%} else {%>
+                            <div class="form-group">
+                                <label for="inputAddress2">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="<%=data.email%>">
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="inputAddress2">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Sorry Password Cant Be changed For u Now"
+                                    name="password">
+                            </div>
+                            <%}%>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="firstname">First Name</label>
