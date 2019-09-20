@@ -78,7 +78,7 @@
               <div class="container">
 
                 <div class="row">
-                  <div class="col-sm-2" >
+                  <div class="col-sm-1" style="margin-right: 2%" >
                     <p>Columns</p>
                   </div>
                   
@@ -120,7 +120,7 @@
                   <% if( option.nameChecked) { %><td><%= data.fullname %></td> <%}%>
                   <% if( option.positionChecked) { %><td><%= data.roles %></td> <%}%>
                   <td><a class="btn btn-success" style="border-radius: 15px;" href="/projects/editMember/<%= projectid %>/<%= data.membersid %>">Edit</a>
-                      <a class="btn btn-danger" style="border-radius: 10px;" href="/projects/deleteMember/<%= projectid %>/<%= data.membersid %>">Delete</a>
+                      <a class="btn btn-danger" style="border-radius: 10px; color: white" onclick="return confirm('Delete ?')" href="/projects/deleteMember/<%= projectid %>/<%= data.membersid %>">Delete</a>
                   </td>
               </tr>
             <% }); %>

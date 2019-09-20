@@ -12,11 +12,12 @@
     <div class="container-fluid">
         
         <a class="nav-link bg-light  'bg-dark text-white':'text-dark'%>"
-            href="/projects/overview/<%= projectid %>" class="list-group-item list-group-item-action <%= path == "overview" ? ' bg-grey-light': '' %>">
+            href="/projects/overview/<%= projectid %>" class="list-group-item list-group-item-action <%= pathside == "overview" ? ' bg-grey-light': '' %>">
             Overview
           </a>
             <a class="nav-link bg-light 'bg-dark text-white':'text-dark'%>" 
-            href="/projects/activity/<%= projectid %>">Activity </a>
+            href="/projects/activity/<%= projectid %>" class="list-group-item list-group-item-action <%= pathside == "activity" ? ' bg-grey-light': '' %>">
+            Activity </a>
             <a class="nav-link bg-light  'bg-dark text-white':'text-dark'%>"
             href="/projects/members/<%= projectid %>">Members </a> 
             <a class="nav-link bg-light  'bg-dark text-white':'text-dark'%>"

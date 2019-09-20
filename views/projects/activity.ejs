@@ -13,27 +13,32 @@
                 <h2 style="margin-top: 1%">Activity</h2>
                 <hr class="mt-1">
             </div>
-            <div class="container-fluid">                
-                <div class="card">
-                    <div class="card-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12 col-md-8"> Activity
-                                    <ul>
-                                        <li> </li>
-                                        <li>  </li>
-                                        <li> </li>
-                                    </ul>
+            <div class="container-fluid">
+                    <div class="container-fluid">
+                        <h3 style="margin-top: 1%">Activity</h3>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-12 col-md-8"> From <%= moment(sevendays).format('DD/MM/YYYY') %>
+                                            to <%= moment(now).format('DD/MM/YYYY') %>
+                                            <% for (var key in data) { %>
+                                            <ul> <strong><%= data[key].date == moment(now).format('YYYY-MM-DD') ? 'Today' : key %></strong>
+                                                <% data[key].data.forEach((item)=>{ %>
+                                                <li><%= `${moment(item.time).format('HH:mm')} ${item.title} : ${item.description}, Author : ${item.firstname} ` %>
+                                                </li>
+                                                <%})%>
+                                            </ul>
+                                            <%}%>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-            </div>
         </div>
-        
-        <!-- </div> -->
+
 </body>
 
 </html>

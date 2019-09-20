@@ -26,6 +26,7 @@ module.exports = (pool) => {
     console.log("==");
     console.log("==");
     console.log("==");
+    let pathside ="projects";
 
 
     const { ckid, id, ckname, name, ckmember, member } = req.query;
@@ -112,9 +113,7 @@ module.exports = (pool) => {
             console.log('this data users >', data.rows);
 
             pool.query(sqloption, (err, options) => {
-              console.log(err, options.rows);
-
-              // console.log(typeof option.rows[0].projectoption);
+              // console.log(err, options.rows);
               res.render('projects/index', {
                 data: projectData.rows,
                 query: req.query,
@@ -122,7 +121,7 @@ module.exports = (pool) => {
                 current: page,
                 pages: pages,
                 url: url,
-                path,
+                path,pathside,
                 option: JSON.parse(options.rows[0].projectsoptions),
                 isAdmin: req.session.user
               })
@@ -293,33 +292,72 @@ module.exports = (pool) => {
   //==========Router Get Overview=========\\
   router.get('/overview/:projectid', LoginSession.isLoggedIn, (req, res) => {
     let path = "overview"
+    let pathside ="overview";
     console.log('=====================Router Profile=============================');
     console.log("==");
     console.log("==");
     console.log("==");
 
-    let sql = `SELECT tracker ,count(issueid) as total FROM issues WHERE projectid = ${req.params.projectid} AND status !='Closed' GROUP BY tracker`;
+    let sql = `SELECT tracker ,count(issueid) as opens FROM issues WHERE projectid = ${req.params.projectid} AND status !='Closed' GROUP BY tracker`;
+    let sqltracker = `SELECT tracker ,count(issueid) as total FROM issues WHERE projectid = ${req.params.projectid}  GROUP BY tracker`
+    let sqluser = `SELECT users.firstname,lastname FROM members LEFT JOIN users ON members.userid = users.userid WHERE projectid =${req.params.projectid} `;
+
     pool.query(sql, (err, count) => {
-      res.render('projects/overview', {
-        count: count.rows,
-        path,
-        projectid: req.params.projectid
+      pool.query(sqltracker, (err, data) => {
+        pool.query(sqluser, (err, user) => {
+
+          res.render('projects/overview', {
+            count: count.rows,
+            data: data.rows,
+            users:user.rows,
+            path,pathside,
+            projectid: req.params.projectid
+          })
+
+        })
       })
     });
   })
 
-  //==========Router Get Overview=========\\
+  //==========Router Get Activity=========\\
   router.get('/activity/:projectid', LoginSession.isLoggedIn, (req, res) => {
     let path = "activity"
+    let pathside = "activity"
     console.log('=====================Router Acitivity get=============================');
     console.log("==");
     console.log("==");
     console.log("==");
 
-    res.render('projects/activity', {
-      path,
-      projectid: req.params.projectid
-    });
+    var days = 7;
+    var now = new Date();
+    var date = new Date();
+    var sevendays = date.setTime(date.getTime() - (days * 24 * 60 * 60 * 1000));
+
+    let sql = `SELECT * FROM activity INNER JOIN users ON activity.author=users.userid WHERE time BETWEEN '${moment(sevendays).format('YYYY-MM-DD')}' AND '${moment(now).add(1, 'days').format('YYYY-MM-DD')}' order by time desc`;
+    console.log('this sql acitivity GET>>', sql);
+
+    pool.query(sql, (err, data) => {
+
+      let result = {};
+      data.rows.forEach((item) => {
+        if (result[moment(item.time).format('dddd')] && result[moment(item.time).format('dddd')].data) {
+          result[moment(item.time).format('dddd')].data.push(item);
+        } else {
+          result[moment(item.time).format('dddd')] = { date: moment(item.time).format('YYYY-MM-DD'), data: [item] };
+        }
+      })
+      console.log(result);
+
+      res.render('projects/activity', {
+        projectid: req.params.projectid,
+        path,pathside,
+        isAdmin: req.session.user,
+        data: result,
+        now,
+        sevendays,
+        moment
+      })
+    })
   })
 
 
@@ -549,14 +587,14 @@ module.exports = (pool) => {
       temp.push(`issues.tracker= '${tracker}'`)
     }
     let sql = `SELECT count(*) as total FROM issues WHERE projectid = ${req.params.projectid}`;
-    
+
     // if (temp.length > 0) {
     //   sql += ` WHERE ${temp.join(" AND ")}`
     // }
-    console.log('this sql isse>> ',sql);
-    
-    console.log('this temp push',temp.push);
-    
+    console.log('this sql isse>> ', sql);
+
+    console.log('this temp push', temp.push);
+
     pool.query(sql, (err, count) => {
       const total = count.rows[0].total
       const pages = Math.ceil(total / limit)
@@ -690,7 +728,7 @@ module.exports = (pool) => {
         res.render('issues/edit', {
           issues: data.rows,
           datauser: datauser.rows,
-          data:data.rows[0],
+          data: data.rows[0],
           projectid,
           id,
           path,
@@ -711,12 +749,18 @@ module.exports = (pool) => {
     let author = req.session.user.userid;
     console.log('this author Edit issues>>', author);
 
-    const { tracker, subject, description, status, priority, assignee, startdate, duedate, estimatetime, progres, spenttime, targetversion, parenttask, createddate } = req.body;
+    const { tracker, subject, description, status, priority, assignee, startdate, duedate, estimatetime, progres, spenttime, targetversion, parenttask, createddate, filename } = req.body;
 
-    let upload = req.files.doc;
-    let filename = upload.name.toLowerCase().replace('', Date.now());
+    if (req.files) {
 
-    if (status == 'CLosed') {
+      let upload = req.files.doc;
+      filename = upload.name.toLowerCase().replace('', Date.now());
+      upload.mv(pathnode.join(__dirname, `../public/images/${filename}`)), (err) => {
+        if (err) console.log(err);
+      }
+
+    }
+    if (status == 'Closed') {
       sql = `UPDATE issues SET tracker ='${tracker}',
                               subject = '${subject}',
                               description ='${description}',
@@ -736,7 +780,7 @@ module.exports = (pool) => {
                               assignee = ${assignee} WHERE issueid =${req.params.issueid};
       `
     } else {
-      sql =`UPDATE issues SET tracker ='${tracker}',
+      sql = `UPDATE issues SET tracker ='${tracker}',
                               subject = '${subject}',
                               description ='${description}',
                               status = '${status}',
@@ -753,23 +797,26 @@ module.exports = (pool) => {
                               updatedate =  now(),
                               assignee = ${assignee} WHERE issueid = ${req.params.issueid}`;
     }
-    console.log('this sql edit issues >>',sql);
-
-    let sqlusers = `SELECT users.firstname, users.lastname FROM users WHERE userid = ${req.session.user.userid}`;
-    
-    if (req.files) {
-      upload.mv(pathnode.join(__dirname, `../public/images/${filename}`)), (err) => {
-        if (err) console.log(err);
-      }
-    }
+    console.log('this sql edit issues >>', sql);
+    let title = `${subject}#${req.params.issueid} (${status})`
 
     pool.query(sql, (err, data) => {
-      if (err) { console.log('Not Found',err) }
-      res.redirect(`/projects/issues/${projectid}`)
+
+      let activity = `INSERT INTO activity (title, description, author,time) VALUES('${title}', '${description}',${req.session.user.userid}, now())`;
+
+      console.log('this sql activity>>', activity);
+
+      pool.query(activity, (err) => {
+        if (err) { console.log('Not Found', err) }
+        res.redirect(`/projects/issues/${projectid}`)
+
+
+      })
     })
   })
 
-  router.get('/deletedIssues/:projectid/:issueid',(req, res) =>{
+  //=======================Router Get Deleted Issues=============\\
+  router.get('/deletedIssues/:projectid/:issueid', (req, res) => {
     console.log("=================Router GET DELETED  Issues============");
     console.log("==");
     console.log("==");

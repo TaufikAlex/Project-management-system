@@ -17,8 +17,8 @@
                             <div class="row">
                                 <div class="col-12 col-md-8"> Issues Tracker
                                     <ul>
-                                        <%count.forEach(item => { %>
-                                            <li><%=item.tracker%>  : <%=item.total%> Open / <%=item.status %> </li>
+                                        <%data.forEach(item => { %>
+                                            <li><%=item.tracker%>  : <%= count.filter(ex => ex.tracker == item.tracker)[0].opens %> Open / <%=item.total %> </li>
                                         <% });%>
                                     </ul>
                                 </div>
@@ -32,9 +32,9 @@
                             <div class="row">
                                 <div class="col-12 col-md-8"> Members
                                     <ul>
-                                       
-                                        <li></li>
-                                        
+                                        <% users.forEach(user => { %>
+                                            <li><%= user.firstname + ''+ user.lastname %></li>
+                                        <% }); %>
                                     </ul>
                                 </div>
                             </div>

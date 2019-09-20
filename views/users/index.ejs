@@ -1,6 +1,6 @@
-<% include ../partials/headers %>
+  <% include ../partials/headers %>
 
-    <h1>Projects</h1>
+    <h1>ADMIN</h1>
     <h2>Filters</h2>
     <div class="container" style="padding-top: 20px">
     <form action="/users" method="GET">       
@@ -19,6 +19,22 @@
             </div>
           </div>
     </div>
+    <!---------Menampilkan box EMAIL------->
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="form-check">
+                <input class="form-check-input" 
+                type="checkbox" 
+                name="ckemail"
+                />Email
+            </div>
+        </div>
+        <div class="col-sm-10">
+            <div class="form-group">
+                <input type="email" class="form-control" id="email" name="email"placeholder="Email"/>
+            </div>
+          </div>
+    </div>
     <!---------Menampilkan box Nama------->
     <div class="row">
         <div class="col-sm-2">
@@ -29,35 +45,56 @@
                 />Name
             </div>
         </div>
-        <div class="col-sm-10">"
->            <div class="form-group">
+        <div class="col-sm-10">
+            <div class="form-group">
                 <input type="text" class="form-control" id="name" name="name"placeholder="Name"/>
             </div>
           </div>
     </div>
     
-        <!-------Menampilkan box Member -------->
+        <!-------Menampilkan box Type Job -------->
         <div class="row">
           <div class="col-sm-2">
               <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="ckmember"/>Member
+                  <input class="form-check-input" type="checkbox" name="ckTypejob"/>TypeJob
               </div>
-          </div>"
->          <div class="col-sm-5">
+          </div>
+          <div class="col-sm-5">
             
             <div class="form-group">                    
-              <select class="form-control" name="member">
-                <option value="">Choose the member..</option>
-                <%for (let i =0; i < data.length; i++) { %>
-                  <option value="" ></option>  
-                             
+              <select class="form-control" name="Typejob">
+                <option value="">Choose the TypeJob..</option>
+                
+                <option value="true" <%= query.type == "true" ? ' selected': ''%>>Fulltime</option>
+                <option value="false" <%= query.type == "false" ? ' selected': '' %>>Parttime</option> 
+                                  
                   </select>
               </div>
             </div>
         </div>
+        <!-------Menampilkan box Role -------->
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="ckRole"/>Role
+                </div>
+            </div>
+            <div class="col-sm-5">
+              
+              <div class="form-group">                    
+                <select class="form-control" name="Role">
+                  <option>Choose the Position</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Programmer">Programmer</option>
+                  <option value="Quality Assurance">Quality Assurance</option>
+                                    
+                    </select>
+                </div>
+              </div>
+          </div>
             <button type="submit" class="btn btn-primary" style="border-radius: 20px;">Search</button>
           
-          <button a href="/projects" type="submit" class="btn btn-success" style="border-radius: 20px;">Reset</button>
+          <button a href="/users" type="submit" class="btn btn-success" style="border-radius: 20px;">Reset</button>
           
         </div>
             
@@ -68,7 +105,7 @@
 
           <h1>Options</h1>
 
-          <form action="/projects/update" method="POST">
+          <form action="/users/option" method="POST">
             <div class="container">
               <div class="row">
                 <div class="col-sm-2">
@@ -76,19 +113,27 @@
                 </div>
                 
                 <div class="col-sm-2">
-                    <div class="custom-control custom-checkbox">
+                        <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="customCheck1" name="idChecked" value="true" <%= option.idChecked== "true" ? ' checked': '' %>>
-                        <label class="custom-control-label" for="customCheck1" >ID </label>                        
-                      </div>
+                        <label class="custom-control-label" for="customCheck1" >ID </label>
+                        </div>
                   
-                      <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input" id="customCheck2" name="nameChecked" value="true" <%= option.nameChecked== "true" ? ' checked': '' %>>
-                          <label class="custom-control-label" for="customCheck2" >Name </label>                        
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="customCheck2" name="emailChecked" value="true" <%= option.emailChecked== "true" ? ' checked': '' %> >
+                          <label class="custom-control-label" for="customCheck2" >Email </label>                        
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheck3" name="memberChecked" value="true"  <%= option.memberChecked== "true" ? ' checked': '' %>>
-                            <label class="custom-control-label" for="customCheck3">Member </label>                        
-                          </div>
+                            <input type="checkbox" class="custom-control-input" id="customCheck3" name="nameChecked" value="true" <%= option.nameChecked== "true" ? ' checked': '' %> >
+                            <label class="custom-control-label" for="customCheck3">Name </label>                        
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="customCheck4" name="typejobChecked" value="true" <%= option.typejobChecked== "true" ? ' checked': '' %> >
+                          <label class="custom-control-label" for="customCheck4">TypeJob </label>                        
+                      </div>
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck5" name="rolesChecked" value="true" <%= option.rolesChecked== "true" ? ' checked': '' %> >
+                        <label class="custom-control-label" for="customCheck5">Roles </label>                        
+                    </div>
                 </div>
               </div>
             </div>
@@ -102,42 +147,35 @@
         <table class="table table-striped" border="1">
           <thead>
             <tr>
-                <% if( option.idChecked == "true") { %> <th scope="col">#</th> <%}%>
-                <% if( option.nameChecked == "true" ) { %><th scope="col">Nama</th><%}%>
-                <% if( option.memberChecked == "true" ) { %><th scope="col">Member</th><%}%>
+              <% if( option.idChecked == "true") { %> <th scope="col">#</th> <%}%>
+              <% if( option.emailChecked == "true" ) { %><th scope="col">Email</th><%}%>
+              <% if( option.nameChecked == "true" ) { %><th scope="col">Name</th><%}%>
+              <% if( option.typejobChecked == "true" ) { %><th scope="col">TypeJob</th><%}%>
+              <% if( option.rolesChecked == "true" ) { %><th scope="col">Roles</th><%}%>
                 <th scope="col">Action</th>
+
             </tr>  
           </thead>
           <tbody>
-            <% data.forEach(data => { %>
+            <% user.forEach(user => { %>
               <tr>
-                  <% if( option.idChecked) { %> <td><a href="/profiles/"> <%= data.projectid %></td> </a><%}%>
-                  <% if( option.nameChecked) { %><td><%= data.name %></td> <%}%>
-                  <% if( option.memberChecked) { %><td><%= data.members %></td> <%}%>
-                  <td><a class="btn btn-success" style="border-radius: 15px;" href="/projects/edit/<%= data.projectid %>">Edit</a>
-                      <a class="btn btn-danger" style="border-radius: 10px;" href="/projects/deleted/<%= data.projectid %>">Delete</a>
+                <% if( option.idChecked) { %>   <td><%=user.userid %></td> <%}%>
+                <% if( option.emailChecked) { %> <td><%=user.email %></td> <%}%>
+                <% if( option.nameChecked) { %> <td><%=user.firstname +' '+user.lastname %></td> <%}%>
+                <% if( option.typejobChecked){%> <td><%=user.typejob %></td> <%}%>
+                <% if( option.rolesChecked) {%> <td><%=user.roles %></td> <%}%>
+                  <td><a class="btn btn-success" style="border-radius: 15px;" href="/users/editUser/<%=user.userid%>">Edit</a>
+                      <a class="btn btn-danger" style="border-radius: 10px; color: white" onclick="return confirm('Delete ?')" href="/users/deleteUser/<%=user.userid %>">Delete</a>
                   </td>
               </tr>
-            <% }); %>
+           <% });%>
+            
           </tbody>
         </table>
         </div>
-        <nav aria-label="Page navigation example" style="margin-top:1%">
-            <ul class="pagination" class="pagination justify-content-center">
-                <li class="page-item <%= current == 1 ? 'disabled' : ''%>"><a class="page-link"
-                        href="/projects<%= url.replace(`page=${parseInt(current)}`, `page=${parseInt(current) - 1}`) %>">Previous</a>
-                </li>
-                <% for(let i = 1; i <= pages; i++){ %>
-                <li class="page-item <%= current == i ? 'active' : '' %>"><a class="page-link"
-                        href="/projects<%= url.replace(`page=${current}`, `page=${i}`) %>"><%= i %></a></li>
-                <% } %>
-                <li class="page-item <%= current == pages ? 'disabled' : ''%>"><a class="page-link"
-                        href="/projects<%= url.replace(`page=${parseInt(current)}`, `page=${parseInt(current) + 1}`) %>">Next</a>
-                </li>
-            </ul>
-        </nav>
+        
 
-        <a class="btn btn-primary" style="border-radius: 20px;" href="/projects/add">ADD</a>
+        <a class="btn btn-primary" style="border-radius: 20px;" href="/users/addUser">ADD</a>
     </div>
 </div>
 

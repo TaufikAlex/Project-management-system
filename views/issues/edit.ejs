@@ -300,14 +300,15 @@
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">File</label>
             <div class="col-sm-5">
+              <input type="hidden" name="filename" value="<%= issues[0].files %>"/>
               <input type="file" id="file" name="doc" class="form-control" value="<%= issues[0].files %>" />
             </div>
           </div>
           <div class='col-sm-4 col-xs-6 col-md-3 col-lg-3 mt-1'>
                 <a class="thumbnail fancybox" rel="ligthbox"
-                    href="/public/images/<%= `${issues[0].files}?${Date.now()}` %>">
+                    href="/images/<%= `${issues[0].files}?${Date.now()}` %>">
                     <img class="img-responsive"
-                        src="/public/images/ <%= `${issues[0].files}?${Date.now()}` %>" alt="" width="100"
+                        src="/images/<%= `${issues[0].files}?${Date.now()}` %>" alt="" width="100"
                         style="margin-left: 75%" />
                 </a>
             </div>
@@ -320,6 +321,7 @@
                 name="spenttime"
                 class="form-control"
                 value="<%= issues[0].spenttime %>"
+                required
               />
             </div>
           </div>
@@ -334,6 +336,7 @@
                 id="targetversion"
                 name="targetversion"
                 value="<%= issues[0].targetversion %>"
+                required
               />
             </div>
           </div>
@@ -397,6 +400,7 @@
                 name="parenttask"
                 class="form-control"
                 value="<%= issues[0].parenttask %>"
+                required
               />
             </div>
           </div>
