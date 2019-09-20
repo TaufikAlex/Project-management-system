@@ -90,11 +90,18 @@
             Sign In
           </button>
           <br><br>
+          
           <a href="#" class="btn btn-lg btn-primary btn-block col-sm-8" style="color: black" title="Account" data-toggle="popover"
         data-placement="bottom"
         data-content="Admin = admin@gmail.com, password : 123 || 
             User = conan@gmail.com password =123 ">Access Account</a>
-  </div>
+        </div>
+  <%if (loginInfo) {%>
+    <div class="alert alert-danger" role="alert">
+      <%= loginInfo %>
+    </div>
+    <%}%>
+    
   </form>
   </div>
 
@@ -102,16 +109,9 @@
     $(document).ready(function () {
       $('[data-toggle="popover"]').popover();
     });
-  </script> 
-            
-          
+  </script>    
         </div>
 
-        <%if (loginInfo) {%>
-        <div class="alert alert-danger" role="alert">
-          <%= loginInfo %>
-        </div>
-        <%}%>
       </form>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
