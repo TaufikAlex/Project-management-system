@@ -70,19 +70,19 @@ module.exports = (pool) => {
       // sql += ` LIMIT ${limit} OFFSET ${offset}`;
 
       pool.query(sql, (err, row) => {
-          pool.query(`SELECT adminoption FROM users WHERE userid = ${req.session.user.userid}`, (err, data) => {
-            res.render('users/index', {
-              user: row.rows,
-              query: req.query,
-              isAdmin: req.session.user,
-              option: data.rows[0].adminoption,
-              path,
-              pages: pages,
-              current: page,
-              url: url
-            })
-          });
-        
+        pool.query(`SELECT adminoption FROM users WHERE userid = ${req.session.user.userid}`, (err, data) => {
+          res.render('users/index', {
+            user: row.rows,
+            query: req.query,
+            isAdmin: req.session.user,
+            option: data.rows[0].adminoption,
+            path,
+            pages: pages,
+            current: page,
+            url: url
+          })
+        });
+
       })
     })
   });
@@ -107,7 +107,7 @@ module.exports = (pool) => {
 
   })
 
-  router.get('/addUser',LoginSession.isLoggedIn, (req, res) => {
+  router.get('/addUser', LoginSession.isLoggedIn, (req, res) => {
     console.log("====================Router GET ADD================");
     console.log("==");
     console.log("==");
@@ -115,9 +115,9 @@ module.exports = (pool) => {
     let path = "user"
 
     res.render('users/add', {
-       path ,
-       isAdmin:req.session.user
-      });
+      path,
+      isAdmin: req.session.user
+    });
   })
 
   router.post('/save', (req, res) => {
@@ -164,12 +164,13 @@ module.exports = (pool) => {
     let type = req.body.type ? true : false;
     console.log('this req body>', req.body);
 
-    let sql2 = `UPDATE users SET email='${email}', password ='${password}',firstname='${firstname}', lastname='${lastname}', roles='${position}', typejob='${type}' WHERE userid ='${req.params.userid}' `
-    console.log(sql2);
 
-    if (password.trim() == '') {
-      sql2 = `UPDATE users SET email= '${email}',firstname='${firstname}', lastname='${lastname}', roles='${position}', typejob='${type}' WHERE userid ='${req.params.userid}'`;
+
+    let sql2 = `UPDATE users SET firstname='${firstname}', lastname='${lastname}', roles='${position}', typejob='${type}' WHERE userid ='${req.params.userid}' `
+    if (password && email !== '') {
+      sql2 = `UPDATE users SET email= '${email}', password ='${password}',firstname='${firstname}', lastname='${lastname}', roles='${position}', typejob='${type}' WHERE userid ='${req.params.userid}'`;
     }
+
     console.log(sql2);
 
     pool.query(sql2, (err) => {
@@ -181,7 +182,7 @@ module.exports = (pool) => {
   // ============================= Router Delete Users ============================= 
   router.get('/deleteUser/:userid', LoginSession.isLoggedIn, (req, res) => {
     let sql = `DELETE FROM users WHERE userid = ${req.params.userid}`;
-    console.log('this sql delete users',sql);
+    console.log('this sql delete users', sql);
     pool.query(sql, (err) => {
       if (err) { console.error('Remove Failed') }
       res.redirect('/users')
