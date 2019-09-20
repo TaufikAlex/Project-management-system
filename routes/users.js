@@ -107,14 +107,17 @@ module.exports = (pool) => {
 
   })
 
-  router.get('/addUser', (req, res) => {
+  router.get('/addUser',LoginSession.isLoggedIn, (req, res) => {
     console.log("====================Router GET ADD================");
     console.log("==");
     console.log("==");
     console.log("==");
     let path = "user"
 
-    res.render('users/add', { path });
+    res.render('users/add', {
+       path ,
+       isAdmin:req.session.user
+      });
   })
 
   router.post('/save', (req, res) => {

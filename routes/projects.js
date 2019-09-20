@@ -26,7 +26,7 @@ module.exports = (pool) => {
     console.log("==");
     console.log("==");
     console.log("==");
-    let pathside ="projects";
+    let pathside = "projects";
 
 
     const { ckid, id, ckname, name, ckmember, member } = req.query;
@@ -121,7 +121,7 @@ module.exports = (pool) => {
                 current: page,
                 pages: pages,
                 url: url,
-                path,pathside,
+                path, pathside,
                 option: JSON.parse(options.rows[0].projectsoptions),
                 isAdmin: req.session.user
               })
@@ -292,7 +292,7 @@ module.exports = (pool) => {
   //==========Router Get Overview=========\\
   router.get('/overview/:projectid', LoginSession.isLoggedIn, (req, res) => {
     let path = "overview"
-    let pathside ="overview";
+    let pathside = "overview";
     console.log('=====================Router Profile=============================');
     console.log("==");
     console.log("==");
@@ -302,16 +302,23 @@ module.exports = (pool) => {
     let sqltracker = `SELECT tracker ,count(issueid) as total FROM issues WHERE projectid = ${req.params.projectid}  GROUP BY tracker`
     let sqluser = `SELECT users.firstname,lastname FROM members LEFT JOIN users ON members.userid = users.userid WHERE projectid =${req.params.projectid} `;
 
+    let sqloverview = `SELECT projects.name FROM projects WHERE projectid =${req.params.projectid}`;
+
     pool.query(sql, (err, count) => {
       pool.query(sqltracker, (err, data) => {
         pool.query(sqluser, (err, user) => {
+          pool.query(sqloverview, (err, overview) => {
 
-          res.render('projects/overview', {
-            count: count.rows,
-            data: data.rows,
-            users:user.rows,
-            path,pathside,
-            projectid: req.params.projectid
+            res.render('projects/overview', {
+              count: count.rows,
+              overview:overview.rows[0],
+              data: data.rows,
+              users: user.rows,
+              path, pathside,
+              isAdmin: req.session.user,//new
+              projectid: req.params.projectid
+            })
+
           })
 
         })
@@ -346,11 +353,11 @@ module.exports = (pool) => {
           result[moment(item.time).format('dddd')] = { date: moment(item.time).format('YYYY-MM-DD'), data: [item] };
         }
       })
-      console.log(result);
+      console.log(data.rows);
 
       res.render('projects/activity', {
         projectid: req.params.projectid,
-        path,pathside,
+        path, pathside,
         isAdmin: req.session.user,
         data: result,
         now,
@@ -405,7 +412,7 @@ module.exports = (pool) => {
       if (temp.length > 0) {
         sqlmember += ` AND ${temp.join(" AND ")}`
       }
-      sqlmember += ` ORDER BY members.projectid LIMIT ${limit} OFFSET ${offset}`
+      sqlmember += ` ORDER BY members.membersid LIMIT ${limit} OFFSET ${offset}`
 
 
       console.log('this sql member>', sqlmember);
@@ -603,7 +610,7 @@ module.exports = (pool) => {
       if (temp.length > 0) {
         sqlissues += ` AND ${temp.join(" AND ")}`
       }
-      sqlissues += ` ORDER BY issues.projectid LIMIT ${limit} OFFSET ${offset}`
+      sqlissues += ` ORDER BY issues.issueid LIMIT ${limit} OFFSET ${offset}`
 
 
       console.log('this sql issues>', sqlissues);
@@ -662,6 +669,7 @@ module.exports = (pool) => {
 
     const pathside = "issues";
     projectid = req.params.projectid;
+
     let sql = `SELECT projects.projectid, users.userid, users.firstname, users.lastname FROM members LEFT JOIN projects ON projects.projectid = members.projectid LEFT JOIN users ON members.userid = users.userid WHERE members.projectid =${projectid} `;
 
     pool.query(sql, (err, data) => {
@@ -670,7 +678,7 @@ module.exports = (pool) => {
         projectid: req.params.projectid,
         path,
         pathside,
-        // isAdmin = req.session.user
+        isAdmin: req.session.user
       })
     })
   })
@@ -714,6 +722,7 @@ module.exports = (pool) => {
     console.log("==");
     console.log("==");
     console.log("==");
+    pathside = "issue"
 
     projectid = req.params.projectid;
     id = req.params.issueid;
@@ -732,6 +741,7 @@ module.exports = (pool) => {
           projectid,
           id,
           path,
+          pathside,
           moment,
           isAdmin: req.session.user
         })

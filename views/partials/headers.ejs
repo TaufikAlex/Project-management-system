@@ -31,10 +31,11 @@
         <li class="nav-item ">
           <a class="nav-link <%= path == "profiles" ? 'active': '' %>"  href="/profiles">Profile</a>
         </li>
-        
+        <% if(isAdmin.isadmin) {%>
         <li class="nav-item ">
           <a class="nav-link <%= path == "users" ? 'active': '' %>" href="/users">Users</a>
         </li>
+        <%}%>
       </ul>
     </div>
     <a href="/logout" class="form-inline btn btn-outline-success my-2 my-sm-0">
