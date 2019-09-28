@@ -1,24 +1,24 @@
 
 <% include ../partials/headers %>
 
-
-<div class="d-flex" id="wrapper" style="margin-top: 0.9%">
+<div class="mt-5">
+<div class="d-flex" id="wrapper">
     <% include ../partials/sidebar %>
         <div class="container-fluid">
             <div class="container-fluid">
                 <h2 style="margin-top: 1%">Overview</h2>
                 <hr class="mt-1">
             </div>
-            <div class="container-fluid">
+            <div class="container-fluid mr-5">
                 <h3 style="margin-top: 1%"><%=overview.name %></h3>
-                <div class="card">
+                <div class="card col-ml-5">
                     <div class="card-body">
                         <div class="container">
                             <div class="row">
-                                <div class="col-12 col-md-8"> Issues Tracker
+                                <div class="col-10 col-ml-5"> Issues Tracker
                                     <ul>
                                         <%data.forEach(item => { %>
-                                            <li><%=item.tracker%>  : <%= count.filter(ex => ex.tracker == item.tracker)[0].opens %> Open / <%=item.total %> </li>
+                                            <li class="mr-5"><%=item.tracker%>  : <%= count.filter(ex => ex.tracker == item.tracker)[0].opens %> Open / <%=item.total %> </li>
                                         <% });%>
                                     </ul>
                                 </div>
@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-
+</div>
 </body>
 
 </html>

@@ -1,11 +1,12 @@
 <% include ../partials/headers %>
 
-<div class="d-flex" id="wrapper" style="margin-top: 0.9%">    
+<div class="mt-5">
+<div class="d-flex" id="wrapper">    
   <% include ../partials/sidebar %>        
       <div class="col">
       </div>
-      <div class="col-10">
-      <div class="container" style="margin-right: 50%" > 
+      <div class="col-12">
+      <div class="container ml-5" > 
           <h2>Filters</h2>
           <form action="/projects/issues/<%=projectid %>" method="GET">
             <input type="hidden" name="page" value="1" />
@@ -51,6 +52,7 @@
                   </div>
                 </div>
               </div>
+              
               <!-- ================================ TRACKER ISSUES ================= -->
               <div class="row">
                 <div class="col-sm-2">
@@ -245,7 +247,9 @@
               <td><%= data[i].author %></td>
               <% } %>
               <td><a href="/projects/editIssues/<%=projectid%>/<%= data[i].issueid %>" > <button type="button" class="btn btn-success"> Edit </button></a>
+                <% if(isAdmin.isadmin) {%>
                 <a href="/projects/deletedIssues/<%=projectid%>/<%= data[i].issueid %>" style="color: white" onclick="return confirm('Delete ?')" > <button type="button" class="btn btn-danger"> Delete </button></a>
+                <% } %>
               </td>
             </tr>
             <% } %>
@@ -266,5 +270,6 @@
         <a href="/projects/addIssues/<%= projectid %>" class="btn btn-secondary">Add</a>
       </div>
     </div>
+  </div>
   </body>
 </html>

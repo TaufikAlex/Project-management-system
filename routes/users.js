@@ -167,6 +167,7 @@ module.exports = (pool) => {
 
 
     let sql2 = `UPDATE users SET firstname='${firstname}', lastname='${lastname}', roles='${position}', typejob='${type}' WHERE userid ='${req.params.userid}' `
+    
     if (password && email !== '') {
       sql2 = `UPDATE users SET email= '${email}', password ='${password}',firstname='${firstname}', lastname='${lastname}', roles='${position}', typejob='${type}' WHERE userid ='${req.params.userid}'`;
     }

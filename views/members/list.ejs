@@ -1,12 +1,12 @@
 
 <% include ../partials/headers %>
 
-
+<div class="mt-5">
 <div class="d-flex" id="wrapper" style="margin-top: 0.9%">
 <% include ../partials/sidebar %>
 
 
-<div class="container" style="margin-right: 30%" >
+<div class="container ml-5" >
     <h1>Members</h1>
     <h2>Filters</h2>
     <form action="/projects/members/<%=projectid %>" method="GET">       
@@ -72,18 +72,18 @@
 
         <!-- ====================Menampilkan Options Columns ================== -->
 
-        <div class="container-fluid mt-4" style="margin-left: 10%">
+        <div class="container-fluid mt-4 ml-5" >
             <h1>Options</h1>
 
             <form action="/projects/optionmember/<%=projectid %>" method="POST">
               <div class="container">
 
                 <div class="row">
-                  <div class="col-sm-1" style="margin-right: 2%" >
+                  <div class="col-sm-1 mr-5"  >
                     <p>Columns</p>
                   </div>
                   
-                    <div class="col-sm-2">
+                    <div class="col-sm-2" >
                             <div class="custom-control custom-checkbox">
                           <input type="checkbox" class="custom-control-input" id="customCheck1" name="idChecked" value="true" <%= option.idChecked== "true" ? ' checked': '' %>>
                           <label class="custom-control-label" for="customCheck1" >ID </label>                        
@@ -100,18 +100,20 @@
                     </div>
                 </div>
               </div>
-              <button type="submit" class="btn btn-success" style="border-radius: 20px; margin-bottom: 20px;">Apply</button>
+              <button type="submit" class="btn btn-success ml-5" style="border-radius: 20px; margin-bottom: 20px;">Apply</button>
             </form>  
         
         <!-- ====================Menampilkan END  Options Columns ================== -->
 
-        <table class="table table-striped" border="1">
-          <thead>
+        <table class="table table-striped ml-5" border="1">
+          <thead class="ml-5">
             <tr>
                 <% if( option.idChecked == "true") { %> <th scope="col">#</th> <%}%>
                 <% if( option.nameChecked == "true" ) { %><th scope="col">Nama</th><%}%>
                 <% if( option.positionChecked == "true" ) { %><th scope="col">Position</th><%}%>
-                <th scope="col">Action</th>
+                <% if(isAdmin.isadmin) {%>
+                  <th scope="col">Action</th>
+                  <%}%>
             </tr>  
           </thead>
           <tbody>
@@ -120,9 +122,12 @@
                   <% if( option.idChecked) { %> <td><%= data.membersid %></td> <%}%>
                   <% if( option.nameChecked) { %><td><%= data.fullname %></td> <%}%>
                   <% if( option.positionChecked) { %><td><%= data.roles %></td> <%}%>
+
+                  <% if(isAdmin.isadmin) {%>
                   <td><a class="btn btn-success" style="border-radius: 15px;" href="/projects/editMember/<%= projectid %>/<%= data.membersid %>">Edit</a>
                       <a class="btn btn-danger" style="border-radius: 10px; color: white" onclick="return confirm('Delete ?')" href="/projects/deleteMember/<%= projectid %>/<%= data.membersid %>">Delete</a>
                   </td>
+                  <%}%>
               </tr>
             <% }); %>
           </tbody>
@@ -141,6 +146,7 @@
         </nav>
         <a class="btn btn-primary" style="border-radius: 20px;" href="/projects/addMember/<%= projectid %>">ADD</a>
     </div> 
+  </div>
             
           
           

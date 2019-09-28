@@ -1,7 +1,8 @@
 <% include ../partials/headers %>
-
+  <div class="mt-5">
     <h1>Projects</h1>
     <h2>Filters</h2>
+  </div>
     <div class="container" style="padding-top: 20px">
     <form action="/projects" method="GET">       
       <input type="hidden" name="page" value="1" /> 
@@ -103,7 +104,10 @@
                 <% if( option.idChecked == "true") { %> <th scope="col">#</th> <%}%>
                 <% if( option.nameChecked == "true" ) { %><th scope="col">Nama</th><%}%>
                 <% if( option.memberChecked == "true" ) { %><th scope="col">Member</th><%}%>
+
+                <% if(isAdmin.isadmin) {%>
                 <th scope="col">Action</th>
+                <%}%>
             </tr>  
           </thead>
           <tbody>
@@ -112,9 +116,12 @@
                   <% if( option.idChecked) { %> <td><a href="/projects/overview/<%= data.projectid %>"> <%= data.projectid %></td> </a><%}%>
                   <% if( option.nameChecked) { %><td><%= data.name %></td> <%}%>
                   <% if( option.memberChecked) { %><td><%= data.members %></td> <%}%>
-                  <td><a class="btn btn-success" style="border-radius: 15px;" href="/projects/edit/<%= data.projectid %>">Edit</a>
+                  <% if(isAdmin.isadmin) {%>
+                  <td>
+                    <a class="btn btn-success" style="border-radius: 15px;" href="/projects/edit/<%= data.projectid %>">Edit</a>
                       <a class="btn btn-danger" style="border-radius: 10px; color: white" onclick="return confirm('Delete ?')" href="/projects/deleted/<%= data.projectid %>">Delete</a>
-                  </td>
+                      </td>
+                      <%}%>
               </tr>
             <% }); %>
           </tbody>

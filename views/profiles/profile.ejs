@@ -1,6 +1,8 @@
 <% include ../partials/headers %>
+<div class="mt-5">
+    <h1>Profile</h1>
 
-<h1>Profile</h1>
+</div>
 <form action="/profiles/update" method="POST" style="margin-top: 20px;">       
   <input type="hidden" name="page" value="1" /> 
   <!---------Menampilkan box id------->
@@ -55,7 +57,7 @@
 <fieldset class="form-group">
     <div class="row">
         <legend class="col-form-label col-sm-2 pt-0"> Position</legend>
-        <div class="col-sm-10">
+        <div class="col-sm-10 ">
             <div class="custom-control custom-radio">
                 <input type="radio" id="manager" name="role" class="custom-control-input"
                     value="Manager" <%= Data.roles == 'Manager' ? 'checked' : '' %>>
@@ -76,10 +78,10 @@
     </div>
   </div>
 </fieldset>
-<fieldset class="form-group">
+<fieldset class="form-group ml-3">
     <div class="row">
         <legend class="col-form-label col-sm-2 pt-0"> Type</legend>
-        <div class="col-sm-10">
+        <div class="col-sm-10 ">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" id="typejob" name="typejob" class="custom-control-input"
                     value="true" <%= Data.typejob == true ? 'checked' : '' %>>
