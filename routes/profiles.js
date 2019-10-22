@@ -19,7 +19,7 @@ module.exports = (pool) => {
   router.get('/', LoginSession.isLoggedIn, (req, res) => {
     console.log("============================Router GET profile====================");
     let sql = `SELECT * FROM users where userid = ${req.session.user.userid}`;
-    console.log('this sql get>', sql);
+    console.log('this sql ge >', sql);
     var path = "profiles";
 
     pool.query(sql, (err, row, user) => {
@@ -30,6 +30,7 @@ module.exports = (pool) => {
         data: req.session.user,
         Data,
         path,
+        berhasil:req.flash("berhasil")[0],
         isAdmin: req.session.user
       })
     })
@@ -51,13 +52,12 @@ module.exports = (pool) => {
     }
     console.log(sql2);
     
-    pool.query(sql2, (err, processData) => {
-      console.log(processData.rows);
-
+    pool.query(sql2) 
+    .then (() => { 
+      req.flash('berhasil',"Options Updated!")
       res.redirect('/profiles')
-
     })
-    
+    .catch(err => console.log(err));
 
   })
   return router;

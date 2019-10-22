@@ -28,7 +28,7 @@
     </div>
     <div class="col-sm-6">
         <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Sorry Password Cant Be changed For u Now" value="" disabled/>
+            <input type="password" class="form-control" name="password" placeholder="Password" value=""/>
         </div>
       </div>
 </div>
@@ -38,7 +38,7 @@
             <input type="email" class="form-control" id="EMAIL" name="EMAIL"placeholder="EMAIL" value="<%=Data.email%>" disabled/>
         </div>
       </div>
-</div>
+
 <!---------Menampilkan box Nama------->
 <div class="row">
     <div class="col-sm-2">
@@ -71,7 +71,7 @@
             <div class="custom-control custom-radio">
                 <input type="radio" id="QA" name="role" class="custom-control-input"
                     value="Quality Assurance"
-                    <%= Data.roles == 'QualityAssurance' ? 'checked' : '' %>>
+                    <%= Data.roles == 'Quality Assurance' ? 'checked' : '' %>>
                 <label class="custom-control-label" for="QA">Quality Assurance</label>
             </div>
         </div>
@@ -91,10 +91,24 @@
     </div>
 </fieldset>
 
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="submit" class="btn btn-primary" >Update</button>
       </form>
-
-
-
 <% include ../partials/footers %>
+<script src="sweetalert2/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
+
+<%_ if (berhasil){-%>
+<script type="text/javascript">
+    $(document).ready(() => {
+        let berhasil = '<%= berhasil %>';
+        Swal.fire({
+        position: 'center',
+        type: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500
+})
+    })
+</script>
+<%_ } -%>
 
